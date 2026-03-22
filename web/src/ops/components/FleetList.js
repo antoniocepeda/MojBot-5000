@@ -6,7 +6,7 @@ export const FleetList = {
         <td>${bot.setupCode || 'N/A'}</td>
         <td>${bot.kidName || 'N/A'}</td>
         <td>${bot.status || 'N/A'}</td>
-        <td>${bot.lastSeen ? new Date(bot.lastSeen).toLocaleString() : 'Never'}</td>
+        <td>${bot.lastSeenAt ? new Date(bot.lastSeenAt).toLocaleString() : 'Never'}</td>
         <td>
           <button onclick="App.navigate('botForm', { botId: '${bot.id}' })">Edit</button>
         </td>

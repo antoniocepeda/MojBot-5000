@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set up your MojBot</title>
+    <title>MojBot Setup</title>
     <style>
         :root {
             --primary-color: #4A90E2;
@@ -51,7 +51,7 @@
             margin-bottom: 32px;
         }
 
-        h1 {
+        h1, h2 {
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 12px;
@@ -65,7 +65,7 @@
             line-height: 1.5;
         }
 
-        .input-group {
+        .input-group, .form-group {
             margin-bottom: 24px;
             text-align: left;
         }
@@ -147,129 +147,12 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="logo">MojBot</div>
-
-        <!-- Step 1: Setup Code -->
-        <div id="step-code" class="step active">
-            <h1>Set up your MojBot</h1>
-            <p>Enter the code that came with your robot to get started.</p>
-            
-            <form id="form-code">
-                <div class="input-group">
-                    <input type="text" id="setup-code" placeholder="e.g. ABCD1234" required autocomplete="off" autocorrect="off" autocapitalize="characters">
-                    <div id="code-error" class="error-message">That code wasn’t found. Check the code and try again.</div>
-                </div>
-                <button type="submit" id="btn-code">Continue</button>
-                <div id="loading-code" class="loading">Checking code...</div>
-            </form>
+        <div id="app">
+            <!-- Application content will be injected here -->
         </div>
-
-        <!-- Step 2: Kid Name -->
-        <div id="step-name" class="step">
-            <h1>Name your robot dog</h1>
-            <p>Enter your kid’s name so MojBot can personalize the experience.</p>
-            
-            <form id="form-name">
-                <div class="input-group">
-                    <input type="text" id="kid-name" placeholder="Kid's first name" required autocomplete="off">
-                </div>
-                <button type="submit" id="btn-name">Save</button>
-                <div id="loading-name" class="loading">Saving setup...</div>
-            </form>
-        </div>
-
-        <!-- Step 3: Success -->
-        <div id="step-success" class="step">
-            <div class="success-icon">✓</div>
-            <h1>You’re all set</h1>
-            <p>MojBot is saving your setup now. If your robot is online, it should update shortly.</p>
-            <p style="font-size: 14px; margin-top: 32px;">If needed, restart the robot or trigger a sync to pull the latest settings.</p>
-        </div>
-
     </div>
-
-    <script>
-        // DOM Elements
-        const stepCode = document.getElementById('step-code');
-        const stepName = document.getElementById('step-name');
-        const stepSuccess = document.getElementById('step-success');
-        
-        const formCode = document.getElementById('form-code');
-        const inputCode = document.getElementById('setup-code');
-        const btnCode = document.getElementById('btn-code');
-        const errorCode = document.getElementById('code-error');
-        const loadingCode = document.getElementById('loading-code');
-
-        const formName = document.getElementById('form-name');
-        const inputName = document.getElementById('kid-name');
-        const btnName = document.getElementById('btn-name');
-        const loadingName = document.getElementById('loading-name');
-
-        // State
-        let currentCode = '';
-
-        // Step 1: Handle Code Submission
-        formCode.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const code = inputCode.value.trim().toUpperCase();
-            
-            if (!code) return;
-
-            // Reset error state
-            inputCode.classList.remove('error');
-            errorCode.style.display = 'none';
-            
-            // UI Loading state
-            btnCode.disabled = true;
-            loadingCode.style.display = 'block';
-
-            // Simulate API Call to validate code
-            setTimeout(() => {
-                // Mock validation: any code > 4 chars works, except "ERROR"
-                if (code.length >= 4 && code !== 'ERROR') {
-                    currentCode = code;
-                    showStep(stepName);
-                    inputName.focus();
-                } else {
-                    inputCode.classList.add('error');
-                    errorCode.style.display = 'block';
-                }
-                
-                btnCode.disabled = false;
-                loadingCode.style.display = 'none';
-            }, 800);
-        });
-
-        // Step 2: Handle Name Submission
-        formName.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = inputName.value.trim();
-            
-            if (!name) return;
-
-            // UI Loading state
-            btnName.disabled = true;
-            loadingName.style.display = 'block';
-
-            // Simulate API Call to save config
-            // POST /api/start { setup_code: currentCode, kid_name: name }
-            setTimeout(() => {
-                showStep(stepSuccess);
-            }, 1000);
-        });
-
-        // Helper: Switch Steps
-        function showStep(stepElement) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            stepElement.classList.add('active');
-        }
-
-        // Auto-capitalize code input
-        inputCode.addEventListener('input', function() {
-            this.value = this.value.toUpperCase();
-        });
-    </script>
+    <script type="module" src="./src/app.js"></script>
 </body>
 </html>

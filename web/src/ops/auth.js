@@ -5,9 +5,9 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, on
 // Replace with your actual Firebase project config
 const firebaseConfig = {
   apiKey: "fake-api-key", // Emulators don't need a real API key, but the SDK requires a string
-  authDomain: "demo-mojbot.firebaseapp.com",
-  projectId: "demo-mojbot",
-  storageBucket: "demo-mojbot.appspot.com",
+  authDomain: "mojbot-5000.firebaseapp.com",
+  projectId: "mojbot-5000",
+  storageBucket: "mojbot-5000.appspot.com",
   messagingSenderId: "123456789",
   appId: "1:123456789:web:abcdef"
 };
@@ -16,8 +16,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Connect to the local emulator
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
+// Connect to the local emulator if running on localhost
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099");
+}
 
 export const login = async (email, password) => {
   try {

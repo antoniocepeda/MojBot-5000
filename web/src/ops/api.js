@@ -2,7 +2,15 @@ import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, connectFires
 import { app } from './auth.js';
 
 const db = getFirestore(app);
-connectFirestoreEmulator(db, '127.0.0.1', 8085);
+
+// Connect to the local emulator if running on localhost
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  try {
+    connectFirestoreEmulator(db, '127.0.0.1', 8085);
+  } catch (e) {
+    // Ignore if already connected
+  }
+}
 
 export const getBots = async () => {
   try {
@@ -23,9 +31,15 @@ export const createBot = async (botData) => {
   try {
     const botsCol = collection(db, 'bots');
     const docRef = await addDoc(botsCol, {
-      ...botData,
-      createdAt: new Date().toISOString(),
-      lastSeen: null
+      macAddress: botData.macAddress || '',
+      setupCode: botData.setupCode || '',
+      kidName: botData.kidName || null,
+      status: botData.status || 'unclaimed',
+      claimedAt: null,
+      updatedAt: new Date().toISOString(),
+      configVersion: 0,
+      lastSeenAt: null,
+      notes: botData.notes || ''
     });
     return { id: docRef.id, error: null };
   } catch (error) {

@@ -2,13 +2,9 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
+const db = admin.firestore();
 
-// Mock database for now
-const mockRobots = new Map<string, any>();
-// Seed a valid code for testing
-mockRobots.set("ABCD1234", { mac_address: "00:11:22:33:44:55", status: "unclaimed" });
-
-export const validateCode = functions.https.onRequest((req, res) => {
+export const validateCode = functions.https.onRequest(async (req, res) => {
   // Enable CORS
   res.set('Access-Control-Allow-Origin', '*');
   
@@ -33,15 +29,32 @@ export const validateCode = functions.https.onRequest((req, res) => {
 
   const normalizedCode = setup_code.trim().toUpperCase();
 
-  // Validate against our mock DB or any code >= 4 chars for testing
-  if (mockRobots.has(normalizedCode) || normalizedCode.length >= 4) {
-    res.status(200).json({ ok: true });
-  } else {
-    res.status(400).json({ ok: false, error: "invalid_code" });
+  try {
+    const botsRef = db.collection('bots');
+    const q = botsRef.where('setupCode', '==', normalizedCode);
+    const querySnapshot = await q.get();
+
+    if (querySnapshot.empty) {
+      res.status(400).json({ ok: false, error: "invalid_code" });
+      return;
+    }
+
+    const botDoc = querySnapshot.docs[0];
+    const botData = botDoc.data();
+
+    if (botData.status !== 'unclaimed') {
+      res.status(400).json({ ok: false, error: "already_claimed" });
+      return;
+    }
+
+    res.status(200).json({ ok: true, botId: botDoc.id });
+  } catch (error) {
+    console.error("Error validating code:", error);
+    res.status(500).json({ ok: false, error: "server_error" });
   }
 });
 
-export const startSetup = functions.https.onRequest((req, res) => {
+export const startSetup = functions.https.onRequest(async (req, res) => {
   // Enable CORS
   res.set('Access-Control-Allow-Origin', '*');
   
@@ -65,12 +78,95 @@ export const startSetup = functions.https.onRequest((req, res) => {
   }
 
   const normalizedCode = setup_code.trim().toUpperCase();
+  const trimmedName = kid_name.trim();
   
-  // In a real app, we would save this to Firestore
-  // const db = admin.firestore();
-  // await db.collection('robots').doc(normalizedCode).update({ kid_name: kid_name, updated_at: admin.firestore.FieldValue.serverTimestamp() });
+  try {
+    const botsRef = db.collection('bots');
+    const q = botsRef.where('setupCode', '==', normalizedCode);
+    const querySnapshot = await q.get();
 
-  console.log(`Saved setup for ${normalizedCode}: kid_name = ${kid_name}`);
+    if (querySnapshot.empty) {
+      res.status(400).json({ ok: false, error: "invalid_code" });
+      return;
+    }
 
-  res.status(200).json({ ok: true });
+    const botDoc = querySnapshot.docs[0];
+    const botData = botDoc.data();
+
+    // Optionally, check if it's already claimed, but for robustness we can just overwrite
+    // or we can strictly enforce that it must be unclaimed.
+    if (botData.status !== 'unclaimed' && botData.status !== 'claimed') {
+       // If there are other statuses, handle appropriately. We'll allow re-setup for now.
+    }
+
+    const currentVersion = botData.configVersion || 0;
+
+    await botDoc.ref.update({
+      kidName: trimmedName,
+      status: 'claimed',
+      claimedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      configVersion: currentVersion + 1
+    });
+
+    console.log(`Saved setup for ${normalizedCode}: kidName = ${trimmedName}`);
+    res.status(200).json({ ok: true });
+  } catch (error) {
+    console.error("Error starting setup:", error);
+    res.status(500).json({ ok: false, error: "server_error" });
+  }
+});
+
+export const robotConfig = functions.https.onRequest(async (req, res) => {
+  // Enable CORS
+  res.set('Access-Control-Allow-Origin', '*');
+  
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'GET');
+    res.status(204).send('');
+    return;
+  }
+
+  if (req.method !== "GET") {
+    res.status(405).send("Method Not Allowed");
+    return;
+  }
+
+  const mac = req.query.mac as string;
+
+  if (!mac) {
+    res.status(400).json({ ok: false, error: "missing_mac" });
+    return;
+  }
+
+  try {
+    const botsRef = db.collection('bots');
+    const q = botsRef.where('macAddress', '==', mac);
+    const querySnapshot = await q.get();
+
+    if (querySnapshot.empty) {
+      res.status(404).json({ ok: false, error: "not_found" });
+      return;
+    }
+
+    const botDoc = querySnapshot.docs[0];
+    const botData = botDoc.data();
+
+    // Update lastSeenAt
+    await botDoc.ref.update({
+      lastSeenAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+
+    const config = {
+      kidName: botData.kidName || null,
+      greetingMode: botData.greetingMode || "default",
+      configVersion: botData.configVersion || 0,
+      updatedAt: botData.updatedAt ? botData.updatedAt.toDate().toISOString() : null
+    };
+
+    res.status(200).json({ ok: true, config });
+  } catch (error) {
+    console.error("Error fetching robot config:", error);
+    res.status(500).json({ ok: false, error: "server_error" });
+  }
 });
