@@ -1,0 +1,11 @@
+{
+  "name": "mojbot-web",
+  "version": "1.0.0",
+  "description": "MojBot V1 Landing Page",
+  "scripts": {
+    "dev": "vite web"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
