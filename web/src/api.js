@@ -1,5 +1,5 @@
 // API interactions
-import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { app } from './ops/auth.js'; // Reusing the initialized firebase app
 
 const db = getFirestore(app);
