@@ -39,9 +39,9 @@
   - [x] 4.3 Disable submit button while request is in progress
   - [x] 4.4 On failure, show plain-language error and allow retry without losing entered values
   - [x] 4.5 On success, transition to Confirmation screen
-- [ ] 5.0 Implement Confirmation Screen
-  - [ ] 5.1 Create Confirmation.js with: success headline, short "saving/syncing" message, optional helper line about restarting the robot if needed
-  - [ ] 5.2 Use final v1 copy that clearly explains what happens next
+- [x] 5.0 Implement Confirmation Screen
+  - [x] 5.1 Create Confirmation.js with: success headline, short "saving/syncing" message, optional helper line about restarting the robot if needed
+  - [x] 5.2 Use final v1 copy that clearly explains what happens next
 - [ ] 6.0 Finalize V1 Copy
   - [ ] 6.1 Finalize setup code screen copy
   - [ ] 6.2 Finalize invalid code error copy

@@ -1,6 +1,7 @@
 // Main application logic
 import { renderSetupForm } from './components/SetupForm.js';
 import { renderNameForm } from './components/NameForm.js';
+import { renderConfirmation as renderConfirmationUI } from './components/Confirmation.js';
 import { validateSetupCode, submitSetup } from './api.js';
 
 const appDiv = document.getElementById('app');
@@ -84,12 +85,7 @@ function renderName() {
 }
 
 function renderConfirmation() {
-    appDiv.innerHTML = `
-        <div>
-            <h2>Confirmation</h2>
-            <p>Confirmation message placeholder</p>
-        </div>
-    `;
+    renderConfirmationUI(appDiv);
 }
 
 // Initialize app
