@@ -33,12 +33,12 @@
   - [x] 3.2 Implement form submission handler to capture the kid name
   - [x] 3.3 Validate kid name client-side (required, trimmed, max 30 chars)
   - [x] 3.4 Preserve setup code + kid name in app state for final submission
-- [ ] 4.0 Implement Backend Integration
-  - [ ] 4.1 Implement POST /api/start in api.js sending: setup_code, kid_name
-  - [ ] 4.2 Show loading state while saving
-  - [ ] 4.3 Disable submit button while request is in progress
-  - [ ] 4.4 On failure, show plain-language error and allow retry without losing entered values
-  - [ ] 4.5 On success, transition to Confirmation screen
+- [x] 4.0 Implement Backend Integration
+  - [x] 4.1 Implement POST /api/start in api.js sending: setup_code, kid_name
+  - [x] 4.2 Show loading state while saving
+  - [x] 4.3 Disable submit button while request is in progress
+  - [x] 4.4 On failure, show plain-language error and allow retry without losing entered values
+  - [x] 4.5 On success, transition to Confirmation screen
 - [ ] 5.0 Implement Confirmation Screen
   - [ ] 5.1 Create Confirmation.js with: success headline, short "saving/syncing" message, optional helper line about restarting the robot if needed
   - [ ] 5.2 Use final v1 copy that clearly explains what happens next

@@ -30,3 +30,27 @@ export async function validateSetupCode(code) {
         return { ok: false, error: 'network_error' };
     }
 }
+
+export async function submitSetup(setupCode, kidName) {
+    try {
+        // Mocking the API call
+        // const response = await fetch(`${API_BASE_URL}/start`, {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ setup_code: setupCode, kid_name: kidName })
+        // });
+        // return await response.json();
+
+        console.log(`POST ${API_BASE_URL}/start`, { setup_code: setupCode, kid_name: kidName });
+        
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                // Mocking success
+                resolve({ ok: true });
+            }, 1000);
+        });
+    } catch (error) {
+        console.error("API Error during submitSetup:", error);
+        return { ok: false, error: 'network_error' };
+    }
+}

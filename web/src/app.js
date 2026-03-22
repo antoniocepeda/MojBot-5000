@@ -1,7 +1,7 @@
 // Main application logic
 import { renderSetupForm } from './components/SetupForm.js';
 import { renderNameForm } from './components/NameForm.js';
-import { validateSetupCode } from './api.js';
+import { validateSetupCode, submitSetup } from './api.js';
 
 const appDiv = document.getElementById('app');
 
@@ -58,14 +58,28 @@ function renderSetup() {
 }
 
 function renderName() {
-    renderNameForm(appDiv, (name, showError) => {
-        // We will add validation in the next step, for now just capture
+    renderNameForm(appDiv, async (name, showError) => {
+        const btn = document.getElementById('btn-finish-setup');
+        if(btn) {
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+        }
+
         setupData.kidName = name;
         console.log("Captured kid name:", setupData.kidName);
         
-        // Move to confirmation (will be replaced by API call in step 4)
-        currentState = 'confirmation';
-        render();
+        const result = await submitSetup(setupData.setupCode, setupData.kidName);
+
+        if (result.ok) {
+            currentState = 'confirmation';
+            render();
+        } else {
+            showError("Something went wrong saving your setup. Please try again.");
+            if(btn) {
+                btn.disabled = false;
+                btn.textContent = 'Finish Setup';
+            }
+        }
     });
 }
 
