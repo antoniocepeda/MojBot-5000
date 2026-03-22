@@ -42,12 +42,12 @@
 - [x] 5.0 Implement Confirmation Screen
   - [x] 5.1 Create Confirmation.js with: success headline, short "saving/syncing" message, optional helper line about restarting the robot if needed
   - [x] 5.2 Use final v1 copy that clearly explains what happens next
-- [ ] 6.0 Finalize V1 Copy
-  - [ ] 6.1 Finalize setup code screen copy
-  - [ ] 6.2 Finalize invalid code error copy
-  - [ ] 6.3 Finalize kid name screen copy
-  - [ ] 6.4 Finalize save failure copy
-  - [ ] 6.5 Finalize confirmation screen copy
+- [x] 6.0 Finalize V1 Copy
+  - [x] 6.1 Finalize setup code screen copy
+  - [x] 6.2 Finalize invalid code error copy
+  - [x] 6.3 Finalize kid name screen copy
+  - [x] 6.4 Finalize save failure copy
+  - [x] 6.5 Finalize confirmation screen copy
 - [ ] 7.0 Backend Ownership Clarification
   - [ ] 7.1 Confirm whether this team also owns Firebase Functions/backend endpoints
   - [ ] 7.2 If yes, implement: POST /api/validate-code, POST /api/start
