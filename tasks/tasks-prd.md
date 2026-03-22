@@ -28,11 +28,11 @@
   - [x] 2.5 Show loading state while validating
   - [x] 2.6 On invalid code, show plain-language inline error and allow retry
   - [x] 2.7 On success, preserve validated setup code in app state and transition to Kid Name step
-- [ ] 3.0 Implement Kid Name Entry
-  - [ ] 3.1 Create NameForm.js with: heading, short explanation, kid name input, finish/setup button
-  - [ ] 3.2 Implement form submission handler to capture the kid name
-  - [ ] 3.3 Validate kid name client-side (required, trimmed, max 30 chars)
-  - [ ] 3.4 Preserve setup code + kid name in app state for final submission
+- [x] 3.0 Implement Kid Name Entry
+  - [x] 3.1 Create NameForm.js with: heading, short explanation, kid name input, finish/setup button
+  - [x] 3.2 Implement form submission handler to capture the kid name
+  - [x] 3.3 Validate kid name client-side (required, trimmed, max 30 chars)
+  - [x] 3.4 Preserve setup code + kid name in app state for final submission
 - [ ] 4.0 Implement Backend Integration
   - [ ] 4.1 Implement POST /api/start in api.js sending: setup_code, kid_name
   - [ ] 4.2 Show loading state while saving

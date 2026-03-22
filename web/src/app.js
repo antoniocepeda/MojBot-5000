@@ -1,5 +1,6 @@
 // Main application logic
 import { renderSetupForm } from './components/SetupForm.js';
+import { renderNameForm } from './components/NameForm.js';
 import { validateSetupCode } from './api.js';
 
 const appDiv = document.getElementById('app');
@@ -57,14 +58,12 @@ function renderSetup() {
 }
 
 function renderName() {
-    appDiv.innerHTML = `
-        <div>
-            <h2>Name</h2>
-            <p>Name form placeholder</p>
-            <button id="btn-next-confirm">Submit</button>
-        </div>
-    `;
-    document.getElementById('btn-next-confirm').addEventListener('click', () => {
+    renderNameForm(appDiv, (name, showError) => {
+        // We will add validation in the next step, for now just capture
+        setupData.kidName = name;
+        console.log("Captured kid name:", setupData.kidName);
+        
+        // Move to confirmation (will be replaced by API call in step 4)
         currentState = 'confirmation';
         render();
     });
