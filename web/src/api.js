@@ -1,8 +1,15 @@
 // API interactions
-import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { getFirestore, collection, query, where, getDocs, updateDoc, doc, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { app } from './ops/auth.js'; // Reusing the initialized firebase app
 
 const db = getFirestore(app);
+// In a real app we'd conditionally run this based on environment,
+// but for this demo we'll just connect to the emulator directly.
+try {
+  connectFirestoreEmulator(db, '127.0.0.1', 8085);
+} catch (e) {
+  // Ignore if already connected
+}
 
 export async function validateSetupCode(code) {
     try {
