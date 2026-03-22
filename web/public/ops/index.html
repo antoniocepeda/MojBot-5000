@@ -4,13 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MojBot Ops Panel</title>
-  <link rel="stylesheet" href="/styles.css"> <!-- Assuming a global styles file exists -->
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 20px; max-width: 1000px; margin: 0 auto; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; box-sizing: border-box; }
+    .fleet-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .fleet-table th, .fleet-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    .fleet-table th { background-color: #f5f5f5; }
+    .header-actions { display: flex; justify-content: space-between; align-items: center; }
+    .filters { display: flex; gap: 10px; margin-bottom: 20px; }
+    .filters input, .filters select { padding: 8px; }
+    button { padding: 8px 16px; cursor: pointer; }
+    main { margin-top: 20px; }
+  </style>
 </head>
 <body>
   <div id="app">
     <!-- The app will be rendered here -->
     <p>Loading Ops Panel...</p>
   </div>
-  <script type="module" src="/src/ops/app.js"></script>
+  <script type="module" src="../src/ops/app.js"></script>
 </body>
 </html>

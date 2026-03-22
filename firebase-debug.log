@@ -1,0 +1,101 @@
+[debug] [2026-03-22T05:29:44.630Z] ----------------------------------------------------------------------
+[debug] [2026-03-22T05:29:44.632Z] Command:       /Users/antoniocepeda/.volta/tools/image/node/22.21.1/bin/node /opt/homebrew/bin/firebase emulators:start --project demo-mojbot
+[debug] [2026-03-22T05:29:44.632Z] CLI Version:   14.17.0
+[debug] [2026-03-22T05:29:44.632Z] Platform:      darwin
+[debug] [2026-03-22T05:29:44.632Z] Node Version:  v22.21.1
+[debug] [2026-03-22T05:29:44.632Z] Time:          Sun Mar 22 2026 00:29:44 GMT-0500 (Central Daylight Time)
+[debug] [2026-03-22T05:29:44.632Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-03-22T05:29:44.748Z] openjdk version "25.0.2" 2026-01-20
+
+[debug] [2026-03-22T05:29:44.748Z] OpenJDK Runtime Environment Homebrew (build 25.0.2)
+OpenJDK 64-Bit Server VM Homebrew (build 25.0.2, mixed mode, sharing)
+
+[debug] [2026-03-22T05:29:44.750Z] Parsed Java major version: 25
+[info] i  emulators: Starting emulators: auth, firestore, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, firestore, hosting"}}
+[info] i  emulators: Detected demo project ID "demo-mojbot", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail. {"metadata":{"emulator":{"name":"hub"},"message":"Detected demo project ID \"demo-mojbot\", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail."}}
+[debug] [2026-03-22T05:29:45.151Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-03-22T05:29:45.151Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-03-22T05:29:45.151Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-03-22T05:29:45.151Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-03-22T05:29:45.151Z] [hosting] Hosting Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-03-22T05:29:45.151Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8085}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"hosting":[{"address":"127.0.0.1","family":"IPv4","port":5005}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-03-22T05:29:45.153Z] Emulator locator file path: /var/folders/d_/9k5knpm530b55cg6dfkhf53w0000gn/T/hub-demo-mojbot.json
+[debug] [2026-03-22T05:29:45.153Z] [hub] writing locator at /var/folders/d_/9k5knpm530b55cg6dfkhf53w0000gn/T/hub-demo-mojbot.json
+[debug] [2026-03-22T05:29:45.157Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2026-03-22T05:29:45.157Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2026-03-22T05:29:45.157Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","/Users/antoniocepeda/.cache/firebase/emulators/cloud-firestore-emulator-v1.19.8.jar","--host","127.0.0.1","--port",8085,"--websocket_port",9150,"--project_id","demo-mojbot","--rules","/Users/antoniocepeda/Documents/MojBot-5000/firestore.rules","--single_project_mode",true],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8085} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"/Users/antoniocepeda/.cache/firebase/emulators/cloud-firestore-emulator-v1.19.8.jar\",\"--host\",\"127.0.0.1\",\"--port\",8085,\"--websocket_port\",9150,\"--project_id\",\"demo-mojbot\",\"--rules\",\"/Users/antoniocepeda/Documents/MojBot-5000/firestore.rules\",\"--single_project_mode\",true],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8085}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2026-03-22T05:29:45.279Z] WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by io.netty.util.internal.PlatformDependent0$4 (file:/Users/antoniocepeda/.cache/firebase/emulators/cloud-firestore-emulator-v1.19.8.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$4
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+ {"metadata":{"emulator":{"name":"firestore"},"message":"WARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::objectFieldOffset has been called by io.netty.util.internal.PlatformDependent0$4 (file:/Users/antoniocepeda/.cache/firebase/emulators/cloud-firestore-emulator-v1.19.8.jar)\nWARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$4\nWARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release\n"}}
+[debug] [2026-03-22T05:29:45.544Z] Mar 22, 2026 12:29:45 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+INFO: Started WebSocket server on ws://127.0.0.1:9150
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Mar 22, 2026 12:29:45 AM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start\nINFO: Started WebSocket server on ws://127.0.0.1:9150\n"}}
+[debug] [2026-03-22T05:29:45.554Z] API endpoint: http:// {"metadata":{"emulator":{"name":"firestore"},"message":"API endpoint: http://"}}
+[debug] [2026-03-22T05:29:45.554Z] 127.0.0.1:8085
+If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
+
+   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8085
+
+If you are running a Firestore in Datastore Mode project, run:
+
+   export DATASTORE_EMULATOR_HOST=127.0.0.1:8085
+
+Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
+Dev App Server is now running.
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"127.0.0.1:8085\nIf you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:\n\n   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8085\n\nIf you are running a Firestore in Datastore Mode project, run:\n\n   export DATASTORE_EMULATOR_HOST=127.0.0.1:8085\n\nNote: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.\nDev App Server is now running.\n\n"}}
+[info] ✔  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[debug] [2026-03-22T05:29:47.689Z] Checked if tokens are valid: false, expires at: 1774157477706
+[debug] [2026-03-22T05:29:47.689Z] Checked if tokens are valid: false, expires at: 1774157477706
+[debug] [2026-03-22T05:29:47.689Z] > refreshing access token with scopes: []
+[debug] [2026-03-22T05:29:47.690Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-03-22T05:29:47.690Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-03-22T05:29:47.873Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-03-22T05:29:47.874Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-03-22T05:29:47.887Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/demo-mojbot [none]
+[debug] [2026-03-22T05:29:48.383Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/demo-mojbot 403
+[debug] [2026-03-22T05:29:48.384Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/demo-mojbot {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-03-22T05:29:48.384Z] Request to https://firebase.googleapis.com/v1beta1/projects/demo-mojbot had HTTP Error: 403, The caller does not have permission
+[info] i  hosting[demo-mojbot]: Serving hosting files from: web/public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mweb/public\u001b[22m"}}
+[info] ✔  hosting[demo-mojbot]: Local server: http://127.0.0.1:5005 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://127.0.0.1:5005\u001b[22m\u001b[24m"}}
+[debug] [2026-03-22T05:29:48.451Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬─────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Authentication │ 127.0.0.1:9099 │ http://127.0.0.1:4000/auth      │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Firestore      │ 127.0.0.1:8085 │ http://127.0.0.1:4000/firestore │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Hosting        │ 127.0.0.1:5005 │ n/a                             │
+└────────────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500, 9150
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] "GET /ops HTTP/1.1" 301 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] \"GET /ops HTTP/1.1\" 301 - \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] "GET /ops/ HTTP/1.1" 200 450 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] \"GET /ops/ HTTP/1.1\" 200 450 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] "GET /styles.css HTTP/1.1" 404 149 "http://localhost:5005/ops/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] \"GET /styles.css HTTP/1.1\" 404 149 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] "GET /src/ops/app.js HTTP/1.1" 404 153 "http://localhost:5005/ops/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] \"GET /src/ops/app.js HTTP/1.1\" 404 153 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:5005/ops/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:13 +0000] \"GET /favicon.ico HTTP/1.1\" 404 150 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:15 +0000] "GET /ops/ HTTP/1.1" 200 450 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:15 +0000] \"GET /ops/ HTTP/1.1\" 200 450 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:16 +0000] "GET /styles.css HTTP/1.1" 404 149 "http://localhost:5005/ops/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:16 +0000] \"GET /styles.css HTTP/1.1\" 404 149 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:16 +0000] "GET /src/ops/app.js HTTP/1.1" 404 153 "http://localhost:5005/ops/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:16 +0000] \"GET /src/ops/app.js HTTP/1.1\" 404 153 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:18 +0000] "GET /styles.css HTTP/1.1" 404 149 "http://localhost:5005/ops/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:18 +0000] \"GET /styles.css HTTP/1.1\" 404 149 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:18 +0000] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 187 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:18 +0000] \"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1\" 404 187 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:48 +0000] "GET /ops/ HTTP/1.1" 200 - "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:48 +0000] \"GET /ops/ HTTP/1.1\" 200 - \"-\" \"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:48 +0000] "GET /src/ops/app.js HTTP/1.1" 404 153 "http://localhost:5005/ops/" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:48 +0000] \"GET /src/ops/app.js HTTP/1.1\" 404 153 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:48 +0000] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 187 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:48 +0000] \"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1\" 404 187 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:49 +0000] "GET /ops/ HTTP/1.1" 200 - "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:49 +0000] \"GET /ops/ HTTP/1.1\" 200 - \"-\" \"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:49 +0000] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 187 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:49 +0000] \"GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1\" 404 187 \"-\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36\""}}
+[info] i  hosting: 127.0.0.1 - - [22/Mar/2026:05:30:49 +0000] "GET /src/ops/app.js HTTP/1.1" 404 153 "http://localhost:5005/ops/" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"127.0.0.1 - - [22/Mar/2026:05:30:49 +0000] \"GET /src/ops/app.js HTTP/1.1\" 404 153 \"http://localhost:5005/ops/\" \"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36\""}}
