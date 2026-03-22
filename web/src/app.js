@@ -1,9 +1,15 @@
 // Main application logic
+import { renderSetupForm } from './components/SetupForm.js';
+import { validateSetupCode } from './api.js';
 
 const appDiv = document.getElementById('app');
 
 // Simple state management for the flow
 let currentState = 'setup'; // 'setup', 'name', 'confirmation'
+let setupData = {
+    setupCode: '',
+    kidName: ''
+};
 
 function render() {
     appDiv.innerHTML = ''; // Clear current content
@@ -24,16 +30,29 @@ function render() {
 }
 
 function renderSetup() {
-    appDiv.innerHTML = `
-        <div>
-            <h2>Setup</h2>
-            <p>Setup form placeholder</p>
-            <button id="btn-next-name">Next</button>
-        </div>
-    `;
-    document.getElementById('btn-next-name').addEventListener('click', () => {
-        currentState = 'name';
-        render();
+    renderSetupForm(appDiv, async (code, showError) => {
+        // Show loading state
+        const btn = document.getElementById('btn-continue');
+        if(btn) {
+            btn.disabled = true;
+            btn.textContent = 'Checking...';
+        }
+
+        const result = await validateSetupCode(code);
+        
+        if (result.ok) {
+            setupData.setupCode = code;
+            console.log("Captured valid setup code:", setupData.setupCode);
+            currentState = 'name';
+            render();
+        } else {
+            // Handle error and allow retry
+            showError("That code wasn’t found. Check the code and try again.");
+            if(btn) {
+                btn.disabled = false;
+                btn.textContent = 'Continue';
+            }
+        }
     });
 }
 
