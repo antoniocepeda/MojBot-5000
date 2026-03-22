@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/ops",
+        "destination": "/ops/index.html"
+      },
+      {
         "source": "/start",
         "destination": "/index.html"
       }
