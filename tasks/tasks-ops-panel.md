@@ -39,6 +39,6 @@
   - [x] 4.2 Implement `createBot()` in `ops/api.js` to save a new record to Firestore.
   - [x] 4.3 Implement `updateBot()` in `ops/api.js` to modify an existing record.
   - [x] 4.4 Wire up form submission to save/update and return to the Fleet List view.
-- [ ] 5.0 Connect Public `/start` Flow to Firestore
-  - [ ] 5.1 Update `web/src/api.js` (public flow) to use actual Firebase Functions or Firestore directly (if using client SDK) to validate codes against the `bots` collection.
-  - [ ] 5.2 Update `submitSetup` in `web/src/api.js` to actually update the Firestore record (set `kidName`, `status: claimed`, `claimedAt`).
+- [x] 5.0 Connect Public `/start` Flow to Firestore
+  - [x] 5.1 Update `web/src/api.js` (public flow) to use actual Firebase Functions or Firestore directly (if using client SDK) to validate codes against the `bots` collection.
+  - [x] 5.2 Update `submitSetup` in `web/src/api.js` to actually update the Firestore record (set `kidName`, `status: claimed`, `claimedAt`).

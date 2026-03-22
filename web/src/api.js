@@ -1,30 +1,28 @@
 // API interactions
+import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { app } from './ops/auth.js'; // Reusing the initialized firebase app
 
-const API_BASE_URL = '/api'; // Placeholder for now
+const db = getFirestore(app);
 
 export async function validateSetupCode(code) {
     try {
-        // For now, we mock the API call as requested, but structure it like a real fetch
-        // In a real scenario, this would be:
-        // const response = await fetch(`${API_BASE_URL}/validate-code`, {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ setup_code: code })
-        // });
-        // return await response.json();
+        const botsRef = collection(db, 'bots');
+        const q = query(botsRef, where("setupCode", "==", code));
+        const querySnapshot = await getDocs(q);
 
-        console.log(`POST ${API_BASE_URL}/validate-code`, { setup_code: code });
-        
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Mocking success for '1234' or any 4+ char code for testing
-                if (code && code.length >= 4) {
-                    resolve({ ok: true });
-                } else {
-                    resolve({ ok: false, error: 'invalid_code' });
-                }
-            }, 800); // slight delay to show loading state
-        });
+        if (querySnapshot.empty) {
+            return { ok: false, error: 'invalid_code' };
+        }
+
+        // Assuming setup codes are unique, take the first one
+        const botDoc = querySnapshot.docs[0];
+        const botData = botDoc.data();
+
+        if (botData.status !== 'unclaimed') {
+            return { ok: false, error: 'already_claimed' };
+        }
+
+        return { ok: true, botId: botDoc.id };
     } catch (error) {
         console.error("API Error during validateSetupCode:", error);
         return { ok: false, error: 'network_error' };
@@ -33,22 +31,27 @@ export async function validateSetupCode(code) {
 
 export async function submitSetup(setupCode, kidName) {
     try {
-        // Mocking the API call
-        // const response = await fetch(`${API_BASE_URL}/start`, {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ setup_code: setupCode, kid_name: kidName })
-        // });
-        // return await response.json();
+        // First, we need to find the bot again to get its ID
+        const botsRef = collection(db, 'bots');
+        const q = query(botsRef, where("setupCode", "==", setupCode));
+        const querySnapshot = await getDocs(q);
 
-        console.log(`POST ${API_BASE_URL}/start`, { setup_code: setupCode, kid_name: kidName });
-        
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Mocking success
-                resolve({ ok: true });
-            }, 1000);
+        if (querySnapshot.empty) {
+            return { ok: false, error: 'invalid_code' };
+        }
+
+        const botDoc = querySnapshot.docs[0];
+        const botRef = doc(db, 'bots', botDoc.id);
+
+        // Update the bot record
+        await updateDoc(botRef, {
+            kidName: kidName,
+            status: 'claimed',
+            claimedAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         });
+
+        return { ok: true };
     } catch (error) {
         console.error("API Error during submitSetup:", error);
         return { ok: false, error: 'network_error' };
