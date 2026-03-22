@@ -23,12 +23,12 @@
   - [x] 1.1 Create `web/public/ops/index.html` and `web/src/ops/app.js`.
   - [x] 1.2 Update `firebase.json` to route `/ops` to `ops/index.html`.
   - [x] 1.3 Set up basic state machine in `ops/app.js` (Login -> FleetList -> BotForm).
-- [ ] 2.0 Implement Firebase Auth & Security Rules
-  - [ ] 2.1 Initialize Firebase SDK in `web/src/ops/auth.js`.
-  - [ ] 2.2 Create `Login.js` UI with email/password login.
-  - [ ] 2.3 Implement login handler and session persistence.
-  - [ ] 2.4 Create `firestore.rules` allowing read/write to `bots` only for authenticated users.
-  - [ ] 2.5 Deploy or configure local emulator for Firestore rules.
+- [x] 2.0 Implement Firebase Auth & Security Rules
+  - [x] 2.1 Initialize Firebase SDK in `web/src/ops/auth.js`.
+  - [x] 2.2 Create `Login.js` UI with email/password login.
+  - [x] 2.3 Implement login handler and session persistence.
+  - [x] 2.4 Create `firestore.rules` allowing read/write to `bots` only for authenticated users.
+  - [x] 2.5 Deploy or configure local emulator for Firestore rules.
 - [ ] 3.0 Implement Fleet List View & Search
   - [ ] 3.1 Create `FleetList.js` UI with a table/list showing MAC, setup code, kid name, status, last seen.
   - [ ] 3.2 Implement `getBots()` in `ops/api.js` to fetch records from Firestore.

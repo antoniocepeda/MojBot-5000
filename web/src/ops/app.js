@@ -1,3 +1,6 @@
+import { Login } from './components/Login.js';
+import { login, logout, subscribeToAuthChanges } from './auth.js';
+
 // Main entry point for the internal ops panel
 
 const App = {
@@ -5,11 +8,26 @@ const App = {
   state: {
     view: 'login', // 'login', 'fleetList', 'botForm'
     selectedBotId: null, // Used when editing a bot
+    user: null,
+    authInitialized: false,
   },
 
   init() {
     console.log('Ops Panel Initialized');
-    this.render();
+    
+    subscribeToAuthChanges((user) => {
+      this.state.user = user;
+      this.state.authInitialized = true;
+      
+      if (user) {
+        if (this.state.view === 'login') {
+          this.navigate('fleetList');
+        }
+      } else {
+        this.navigate('login');
+      }
+      this.render();
+    });
   },
 
   navigate(view, params = {}) {
@@ -20,7 +38,33 @@ const App = {
     this.render();
   },
 
+  async handleLogin(event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const errorEl = document.getElementById('login-error');
+    
+    errorEl.style.display = 'none';
+    
+    const { user, error } = await login(email, password);
+    
+    if (error) {
+      errorEl.textContent = error;
+      errorEl.style.display = 'block';
+    }
+  },
+
+  async handleLogout() {
+    await logout();
+  },
+
   render() {
+    if (!this.state.authInitialized) {
+      this.container.innerHTML = `<p>Loading...</p>`;
+      return;
+    }
+
     let viewContent = '';
 
     switch (this.state.view) {
@@ -40,7 +84,12 @@ const App = {
     this.container.innerHTML = `
       <header>
         <h1>MojBot Ops Panel</h1>
-        ${this.state.view !== 'login' ? `<button onclick="App.navigate('login')">Logout</button>` : ''}
+        ${this.state.user ? `
+          <div>
+            <span>Logged in as ${this.state.user.email}</span>
+            <button onclick="App.handleLogout()">Logout</button>
+          </div>
+        ` : ''}
       </header>
       <main>
         ${viewContent}
@@ -49,13 +98,7 @@ const App = {
   },
 
   renderLogin() {
-    return `
-      <div class="login-view">
-        <h2>Admin Login</h2>
-        <p>Placeholder for login form.</p>
-        <button onclick="App.navigate('fleetList')">Simulate Login</button>
-      </div>
-    `;
+    return Login.render();
   },
 
   renderFleetList() {
