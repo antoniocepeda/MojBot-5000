@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
-  base: './', // This ensures all generated asset paths are relative
+  base: '/', // Use absolute paths for assets so rewrites work properly
   build: {
     rollupOptions: {
       input: {
