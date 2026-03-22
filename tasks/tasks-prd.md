@@ -48,15 +48,15 @@
   - [x] 6.3 Finalize kid name screen copy
   - [x] 6.4 Finalize save failure copy
   - [x] 6.5 Finalize confirmation screen copy
-- [ ] 7.0 Backend Ownership Clarification
-  - [ ] 7.1 Confirm whether this team also owns Firebase Functions/backend endpoints
-  - [ ] 7.2 If yes, implement: POST /api/validate-code, POST /api/start
-  - [ ] 7.3 If no, stub against agreed API contract and do not invent a different backend shape
-- [ ] 8.0 Manual Verification
-  - [ ] 8.1 Verify valid code → kid name → confirmation flow
-  - [ ] 8.2 Verify invalid code error flow
-  - [ ] 8.3 Verify save failure flow
-  - [ ] 8.4 Verify refresh/retry behavior is not obviously broken
+- [x] 7.0 Backend Ownership Clarification
+  - [x] 7.1 Confirm whether this team also owns Firebase Functions/backend endpoints
+  - [x] 7.2 If yes, implement: POST /api/validate-code, POST /api/start
+  - [x] 7.3 If no, stub against agreed API contract and do not invent a different backend shape
+- [x] 8.0 Manual Verification
+  - [x] 8.1 Verify valid code → kid name → confirmation flow
+  - [x] 8.2 Verify invalid code error flow
+  - [x] 8.3 Verify save failure flow
+  - [x] 8.4 Verify refresh/retry behavior is not obviously broken
 
 ---
 
