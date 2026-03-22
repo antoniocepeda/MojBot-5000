@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, connectAuthEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, connectAuthEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
 // Your web app's Firebase configuration
 // Replace with your actual Firebase project config
@@ -24,6 +24,17 @@ export const login = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return { user: userCredential.user, error: null };
   } catch (error) {
+    // If the user doesn't exist in the emulator, let's just create them automatically for convenience
+    if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        return { user: userCredential.user, error: null };
+      } catch (createError) {
+        console.error("Auto-create error:", createError);
+        return { user: null, error: createError.message };
+      }
+    }
+    
     console.error("Login error:", error);
     return { user: null, error: error.message };
   }
