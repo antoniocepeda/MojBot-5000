@@ -29,11 +29,11 @@
   - [x] 2.3 Implement login handler and session persistence.
   - [x] 2.4 Create `firestore.rules` allowing read/write to `bots` only for authenticated users.
   - [x] 2.5 Deploy or configure local emulator for Firestore rules.
-- [ ] 3.0 Implement Fleet List View & Search
-  - [ ] 3.1 Create `FleetList.js` UI with a table/list showing MAC, setup code, kid name, status, last seen.
-  - [ ] 3.2 Implement `getBots()` in `ops/api.js` to fetch records from Firestore.
-  - [ ] 3.3 Add search/filter inputs (by setup code, MAC, status) to `FleetList.js` and implement local filtering.
-  - [ ] 3.4 Add "Create Bot" button that transitions to the Bot Form view.
+- [x] 3.0 Implement Fleet List View & Search
+  - [x] 3.1 Create `FleetList.js` UI with a table/list showing MAC, setup code, kid name, status, last seen.
+  - [x] 3.2 Implement `getBots()` in `ops/api.js` to fetch records from Firestore.
+  - [x] 3.3 Add search/filter inputs (by setup code, MAC, status) to `FleetList.js` and implement local filtering.
+  - [x] 3.4 Add "Create Bot" button that transitions to the Bot Form view.
 - [ ] 4.0 Implement Bot Creation & Editing
   - [ ] 4.1 Create `BotForm.js` UI with fields: MAC address, setup code, notes, status dropdown.
   - [ ] 4.2 Implement `createBot()` in `ops/api.js` to save a new record to Firestore.

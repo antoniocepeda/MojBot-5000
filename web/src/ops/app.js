@@ -1,5 +1,7 @@
 import { Login } from './components/Login.js';
+import { FleetList } from './components/FleetList.js';
 import { login, logout, subscribeToAuthChanges } from './auth.js';
+import { getBots } from './api.js';
 
 // Main entry point for the internal ops panel
 
@@ -10,6 +12,11 @@ const App = {
     selectedBotId: null, // Used when editing a bot
     user: null,
     authInitialized: false,
+    bots: [],
+    loadingBots: false,
+    botsError: null,
+    searchQuery: '',
+    statusFilter: ''
   },
 
   init() {
@@ -30,12 +37,25 @@ const App = {
     });
   },
 
-  navigate(view, params = {}) {
+  async navigate(view, params = {}) {
     this.state.view = view;
     if (view === 'botForm') {
       this.state.selectedBotId = params.botId || null;
+    } else if (view === 'fleetList') {
+      await this.loadBots();
     }
     this.render();
+  },
+
+  async loadBots() {
+    this.state.loadingBots = true;
+    this.state.botsError = null;
+    this.render(); // Re-render to show loading state if needed
+
+    const { bots, error } = await getBots();
+    this.state.bots = bots;
+    this.state.botsError = error;
+    this.state.loadingBots = false;
   },
 
   async handleLogin(event) {
@@ -57,6 +77,29 @@ const App = {
 
   async handleLogout() {
     await logout();
+  },
+
+  handleSearch(event) {
+    this.state.searchQuery = event.target.value.toLowerCase();
+    this.render();
+  },
+
+  handleFilter(event) {
+    this.state.statusFilter = event.target.value;
+    this.render();
+  },
+
+  getFilteredBots() {
+    return this.state.bots.filter(bot => {
+      const matchesSearch = !this.state.searchQuery || 
+        (bot.macAddress && bot.macAddress.toLowerCase().includes(this.state.searchQuery)) ||
+        (bot.setupCode && bot.setupCode.toLowerCase().includes(this.state.searchQuery)) ||
+        (bot.kidName && bot.kidName.toLowerCase().includes(this.state.searchQuery));
+        
+      const matchesStatus = !this.state.statusFilter || bot.status === this.state.statusFilter;
+      
+      return matchesSearch && matchesStatus;
+    });
   },
 
   render() {
@@ -102,14 +145,13 @@ const App = {
   },
 
   renderFleetList() {
-    return `
-      <div class="fleet-list-view">
-        <h2>Fleet List</h2>
-        <p>Placeholder for bot list.</p>
-        <button onclick="App.navigate('botForm')">Create New Bot</button>
-        <button onclick="App.navigate('botForm', { botId: '123' })">Simulate Edit Bot</button>
-      </div>
-    `;
+    if (this.state.loadingBots) {
+      return `<p>Loading bots...</p>`;
+    }
+    if (this.state.botsError) {
+      return `<p style="color: red;">Error loading bots: ${this.state.botsError}</p><button onclick="App.loadBots()">Retry</button>`;
+    }
+    return FleetList.render(this.getFilteredBots(), this.state.searchQuery, this.state.statusFilter);
   },
 
   renderBotForm() {
