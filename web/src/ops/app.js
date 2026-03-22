@@ -1,7 +1,8 @@
 import { Login } from './components/Login.js';
 import { FleetList } from './components/FleetList.js';
+import { BotForm } from './components/BotForm.js';
 import { login, logout, subscribeToAuthChanges } from './auth.js';
-import { getBots } from './api.js';
+import { getBots, createBot, updateBot } from './api.js';
 
 // Main entry point for the internal ops panel
 
@@ -102,6 +103,44 @@ const App = {
     });
   },
 
+  async handleBotSubmit(event, botId) {
+    event.preventDefault();
+    const form = event.target;
+    const errorEl = document.getElementById('bot-form-error');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    errorEl.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving...';
+
+    const botData = {
+      macAddress: form.macAddress.value,
+      setupCode: form.setupCode.value,
+      status: form.status.value,
+      notes: form.notes.value
+    };
+
+    if (form.kidName) {
+      botData.kidName = form.kidName.value;
+    }
+
+    let result;
+    if (botId) {
+      result = await updateBot(botId, botData);
+    } else {
+      result = await createBot(botData);
+    }
+
+    if (result.error) {
+      errorEl.textContent = result.error;
+      errorEl.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = botId ? 'Update Bot' : 'Create Bot';
+    } else {
+      this.navigate('fleetList');
+    }
+  },
+
   render() {
     if (!this.state.authInitialized) {
       this.container.innerHTML = `<p>Loading...</p>`;
@@ -156,13 +195,16 @@ const App = {
 
   renderBotForm() {
     const isEditing = !!this.state.selectedBotId;
-    return `
-      <div class="bot-form-view">
-        <h2>${isEditing ? 'Edit Bot' : 'Create Bot'}</h2>
-        <p>Placeholder for bot form. ${isEditing ? `Editing bot ID: ${this.state.selectedBotId}` : ''}</p>
-        <button onclick="App.navigate('fleetList')">Cancel / Back to List</button>
-      </div>
-    `;
+    let botToEdit = null;
+    
+    if (isEditing) {
+      botToEdit = this.state.bots.find(b => b.id === this.state.selectedBotId);
+      if (!botToEdit) {
+        return `<p style="color: red;">Error: Bot not found.</p><button onclick="App.navigate('fleetList')">Back</button>`;
+      }
+    }
+    
+    return BotForm.render(botToEdit);
   }
 };
 
