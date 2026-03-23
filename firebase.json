@@ -3,6 +3,9 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "public": "web/dist",
     "ignore": [
@@ -27,6 +30,9 @@
     },
     "firestore": {
       "port": 8085
+    },
+    "functions": {
+      "port": 5001
     },
     "hosting": {
       "port": 5005

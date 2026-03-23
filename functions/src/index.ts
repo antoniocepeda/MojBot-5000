@@ -1,16 +1,19 @@
-import * as functions from "firebase-functions";
+import { onRequest } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
 const db = admin.firestore();
 
-export const validateCode = functions.https.onRequest(async (req, res) => {
-  // Enable CORS
-  res.set('Access-Control-Allow-Origin', '*');
-  
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+export const validateCode = onRequest({ invoker: "public" }, async (req, res) => {
+  res.set(corsHeaders);
+
   if (req.method === 'OPTIONS') {
     res.set('Access-Control-Allow-Methods', 'POST');
-    res.set('Access-Control-Allow-Headers', 'Content-Type');
     res.status(204).send('');
     return;
   }
@@ -42,8 +45,8 @@ export const validateCode = functions.https.onRequest(async (req, res) => {
     const botDoc = querySnapshot.docs[0];
     const botData = botDoc.data();
 
-    if (botData.status !== 'unclaimed') {
-      res.status(400).json({ ok: false, error: "already_claimed" });
+    if (botData.status !== 'unclaimed' && botData.status !== 'claimed') {
+      res.status(400).json({ ok: false, error: "invalid_status" });
       return;
     }
 
@@ -54,10 +57,9 @@ export const validateCode = functions.https.onRequest(async (req, res) => {
   }
 });
 
-export const startSetup = functions.https.onRequest(async (req, res) => {
-  // Enable CORS
-  res.set('Access-Control-Allow-Origin', '*');
-  
+export const startSetup = onRequest({ invoker: "public" }, async (req, res) => {
+  res.set(corsHeaders);
+
   if (req.method === 'OPTIONS') {
     res.set('Access-Control-Allow-Methods', 'POST');
     res.set('Access-Control-Allow-Headers', 'Content-Type');
@@ -79,7 +81,7 @@ export const startSetup = functions.https.onRequest(async (req, res) => {
 
   const normalizedCode = setup_code.trim().toUpperCase();
   const trimmedName = kid_name.trim();
-  
+
   try {
     const botsRef = db.collection('bots');
     const q = botsRef.where('setupCode', '==', normalizedCode);
@@ -93,10 +95,8 @@ export const startSetup = functions.https.onRequest(async (req, res) => {
     const botDoc = querySnapshot.docs[0];
     const botData = botDoc.data();
 
-    // Optionally, check if it's already claimed, but for robustness we can just overwrite
-    // or we can strictly enforce that it must be unclaimed.
     if (botData.status !== 'unclaimed' && botData.status !== 'claimed') {
-       // If there are other statuses, handle appropriately. We'll allow re-setup for now.
+      // Unknown status — reject gracefully
     }
 
     const currentVersion = botData.configVersion || 0;
@@ -117,10 +117,9 @@ export const startSetup = functions.https.onRequest(async (req, res) => {
   }
 });
 
-export const robotConfig = functions.https.onRequest(async (req, res) => {
-  // Enable CORS
-  res.set('Access-Control-Allow-Origin', '*');
-  
+export const robotConfig = onRequest({ invoker: "public" }, async (req, res) => {
+  res.set(corsHeaders);
+
   if (req.method === 'OPTIONS') {
     res.set('Access-Control-Allow-Methods', 'GET');
     res.status(204).send('');
@@ -152,7 +151,6 @@ export const robotConfig = functions.https.onRequest(async (req, res) => {
     const botDoc = querySnapshot.docs[0];
     const botData = botDoc.data();
 
-    // Update lastSeenAt
     await botDoc.ref.update({
       lastSeenAt: admin.firestore.FieldValue.serverTimestamp()
     });
