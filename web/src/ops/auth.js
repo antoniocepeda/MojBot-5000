@@ -1,35 +1,69 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, connectAuthEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
-// Your web app's Firebase configuration
-// Replace with your actual Firebase project config
-const firebaseConfig = {
-  apiKey: "__REMOVED_FIREBASE_WEB_API_KEY__",
-  authDomain: "mojbot-5000.firebaseapp.com",
-  projectId: "mojbot-5000",
-  storageBucket: "mojbot-5000.firebasestorage.app",
-  messagingSenderId: "984010888674",
-  appId: "1:984010888674:web:52edc068e9bcc405db95bb",
-  measurementId: "G-VBNLV0T8GQ"
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const localFirebaseConfig = {
+  apiKey: 'local-dev-api-key',
+  authDomain: 'mojbot-5000.firebaseapp.com',
+  projectId: 'mojbot-5000',
+  storageBucket: 'mojbot-5000.firebasestorage.app',
+  messagingSenderId: '984010888674',
+  appId: '1:984010888674:web:local-dev'
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+let firebaseStatePromise;
+let authEmulatorConnected = false;
 
-// Connect to the local emulator if running on localhost
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-  connectAuthEmulator(auth, "http://127.0.0.1:9099");
+async function loadFirebaseConfig() {
+  if (isLocal) {
+    return localFirebaseConfig;
+  }
+
+  const response = await fetch('/__/firebase/init.json', {
+    credentials: 'same-origin'
+  });
+
+  if (!response.ok) {
+    throw new Error('Unable to load Firebase config from hosting.');
+  }
+
+  const config = await response.json();
+
+  if (!config?.apiKey || !config?.appId || !config?.projectId) {
+    throw new Error('Firebase hosting config is missing required fields.');
+  }
+
+  return config;
+}
+
+async function getFirebaseState() {
+  if (!firebaseStatePromise) {
+    firebaseStatePromise = (async () => {
+      const firebaseConfig = await loadFirebaseConfig();
+      const app = getApps()[0] || initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      if (isLocal && !authEmulatorConnected) {
+        connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+        authEmulatorConnected = true;
+      }
+
+      return { app, auth };
+    })();
+  }
+
+  return firebaseStatePromise;
 }
 
 export const login = async (email, password) => {
   try {
+    const { auth } = await getFirebaseState();
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return { user: userCredential.user, error: null };
   } catch (error) {
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocal && (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential')) {
       try {
+        const { auth } = await getFirebaseState();
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         return { user: userCredential.user, error: null };
       } catch (createError) {
@@ -45,6 +79,7 @@ export const login = async (email, password) => {
 
 export const logout = async () => {
   try {
+    const { auth } = await getFirebaseState();
     await signOut(auth);
   } catch (error) {
     console.error("Logout error:", error);
@@ -52,7 +87,21 @@ export const logout = async () => {
 };
 
 export const subscribeToAuthChanges = (callback) => {
-  return onAuthStateChanged(auth, callback);
+  let unsubscribe = () => {};
+
+  getFirebaseState()
+    .then(({ auth }) => {
+      unsubscribe = onAuthStateChanged(auth, callback);
+    })
+    .catch((error) => {
+      console.error('Firebase init error:', error);
+      callback(null);
+    });
+
+  return () => unsubscribe();
 };
 
-export { app, auth };
+export const getApp = async () => {
+  const { app } = await getFirebaseState();
+  return app;
+};

@@ -1,19 +1,35 @@
 import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
-import { app } from './auth.js';
+import { getApp } from './auth.js';
 
-const db = getFirestore(app);
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+let dbPromise;
+let firestoreEmulatorConnected = false;
 
-// Connect to the local emulator if running on localhost
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-  try {
-    connectFirestoreEmulator(db, '127.0.0.1', 8085);
-  } catch (e) {
-    // Ignore if already connected
+const getDb = async () => {
+  if (!dbPromise) {
+    dbPromise = (async () => {
+      const app = await getApp();
+      const db = getFirestore(app);
+
+      if (isLocal && !firestoreEmulatorConnected) {
+        try {
+          connectFirestoreEmulator(db, '127.0.0.1', 8085);
+          firestoreEmulatorConnected = true;
+        } catch (e) {
+          // Ignore if already connected
+        }
+      }
+
+      return db;
+    })();
   }
-}
+
+  return dbPromise;
+};
 
 export const getBots = async () => {
   try {
+    const db = await getDb();
     const botsCol = collection(db, 'bots');
     const botSnapshot = await getDocs(botsCol);
     const botList = botSnapshot.docs.map(doc => ({
@@ -29,6 +45,7 @@ export const getBots = async () => {
 
 export const createBot = async (botData) => {
   try {
+    const db = await getDb();
     const botsCol = collection(db, 'bots');
     const docRef = await addDoc(botsCol, {
       macAddress: botData.macAddress || '',
@@ -50,6 +67,7 @@ export const createBot = async (botData) => {
 
 export const updateBot = async (botId, botData) => {
   try {
+    const db = await getDb();
     const botRef = doc(db, 'bots', botId);
     await updateDoc(botRef, {
       ...botData,
