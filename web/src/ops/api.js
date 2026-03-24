@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { getApp } from './auth.js';
 
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -56,7 +56,9 @@ export const createBot = async (botData) => {
       updatedAt: new Date().toISOString(),
       configVersion: 0,
       lastSeenAt: null,
-      notes: botData.notes || ''
+      notes: botData.notes || '',
+      voiceLines: [],
+      movements: []
     });
     return { id: docRef.id, error: null };
   } catch (error) {
@@ -76,6 +78,35 @@ export const updateBot = async (botId, botData) => {
     return { error: null };
   } catch (error) {
     console.error("Error updating bot:", error);
+    return { error: error.message };
+  }
+};
+
+export const pushBotUpdate = async (botId, voiceLines, movements) => {
+  try {
+    const db = await getDb();
+    const botRef = doc(db, 'bots', botId);
+    const botSnap = await getDoc(botRef);
+
+    if (!botSnap.exists()) {
+      return { error: 'Bot not found' };
+    }
+
+    const botData = botSnap.data();
+    const existingVoiceLines = Array.isArray(botData.voiceLines) ? botData.voiceLines : [];
+    const existingMovements = Array.isArray(botData.movements) ? botData.movements : [];
+    const currentVersion = botData.configVersion || 0;
+
+    await updateDoc(botRef, {
+      voiceLines: [...existingVoiceLines, ...voiceLines],
+      movements: [...existingMovements, ...movements],
+      configVersion: currentVersion + 1,
+      updatedAt: new Date().toISOString()
+    });
+
+    return { error: null, newVersion: currentVersion + 1 };
+  } catch (error) {
+    console.error("Error pushing bot update:", error);
     return { error: error.message };
   }
 };

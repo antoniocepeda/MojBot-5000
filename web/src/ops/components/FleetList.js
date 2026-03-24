@@ -1,17 +1,28 @@
 export const FleetList = {
   render(bots = [], searchQuery = '', statusFilter = '') {
-    const rows = bots.map(bot => `
-      <tr>
-        <td>${bot.macAddress || 'N/A'}</td>
-        <td>${bot.setupCode || 'N/A'}</td>
-        <td>${bot.kidName || 'N/A'}</td>
-        <td>${bot.status || 'N/A'}</td>
-        <td>${bot.lastSeenAt ? new Date(bot.lastSeenAt).toLocaleString() : 'Never'}</td>
-        <td>
-          <button onclick="App.navigate('botForm', { botId: '${bot.id}' })">Edit</button>
-        </td>
-      </tr>
-    `).join('');
+    const statusColors = {
+      active: '#22c55e',
+      claimed: '#3b82f6',
+      unclaimed: '#9ca3af',
+      offline: '#ef4444'
+    };
+
+    const rows = bots.map(bot => {
+      const color = statusColors[bot.status] || '#9ca3af';
+      return `
+        <tr>
+          <td>${bot.macAddress || 'N/A'}</td>
+          <td>${bot.setupCode || 'N/A'}</td>
+          <td>${bot.kidName || 'N/A'}</td>
+          <td><span class="status-dot" style="background:${color};"></span> ${bot.status || 'N/A'}</td>
+          <td>${bot.lastSeenAt ? new Date(bot.lastSeenAt).toLocaleString() : 'Never'}</td>
+          <td class="actions-cell">
+            <button class="manage-btn" onclick="App.navigate('botDetail', { botId: '${bot.id}' })">Manage</button>
+            <button class="edit-btn-small" onclick="App.navigate('botForm', { botId: '${bot.id}' })">Edit</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
 
     return `
       <div class="fleet-list-view">

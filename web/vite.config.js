@@ -2,7 +2,20 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
-  base: '/', // Use absolute paths for assets so rewrites work properly
+  base: '/',
+  plugins: [
+    {
+      name: 'rewrite-routes',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url === '/ops') {
+            req.url = '/ops/index.html';
+          }
+          next();
+        });
+      }
+    }
+  ],
   build: {
     rollupOptions: {
       input: {

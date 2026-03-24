@@ -1,23 +1,27 @@
 import { Login } from './components/Login.js';
 import { FleetList } from './components/FleetList.js';
 import { BotForm } from './components/BotForm.js';
+import { BotDetail } from './components/BotDetail.js';
 import { login, logout, subscribeToAuthChanges } from './auth.js';
-import { getBots, createBot, updateBot } from './api.js';
+import { getBots, createBot, updateBot, pushBotUpdate } from './api.js';
 
 // Main entry point for the internal ops panel
 
 const App = {
   container: document.getElementById('app'),
   state: {
-    view: 'login', // 'login', 'fleetList', 'botForm'
-    selectedBotId: null, // Used when editing a bot
+    view: 'login', // 'login', 'fleetList', 'botForm', 'botDetail'
+    selectedBotId: null,
     user: null,
     authInitialized: false,
     bots: [],
     loadingBots: false,
     botsError: null,
     searchQuery: '',
-    statusFilter: ''
+    statusFilter: '',
+    activeDetailTab: 'voiceLines',
+    pendingVoiceLines: [],
+    pendingMovements: []
   },
 
   init() {
@@ -42,6 +46,11 @@ const App = {
     this.state.view = view;
     if (view === 'botForm') {
       this.state.selectedBotId = params.botId || null;
+    } else if (view === 'botDetail') {
+      this.state.selectedBotId = params.botId || null;
+      this.state.activeDetailTab = 'voiceLines';
+      this.state.pendingVoiceLines = [];
+      this.state.pendingMovements = [];
     } else if (view === 'fleetList') {
       await this.loadBots();
     }
@@ -88,6 +97,89 @@ const App = {
   handleFilter(event) {
     this.state.statusFilter = event.target.value;
     this.render();
+  },
+
+  handleDetailTabChange(tab) {
+    this.state.activeDetailTab = tab;
+    this.render();
+  },
+
+  handleAddVoiceLine(event) {
+    event.preventDefault();
+    const form = event.target;
+    this.state.pendingVoiceLines.push({
+      trigger: form.trigger.value,
+      text: form.text.value
+    });
+    this.render();
+  },
+
+  handleRemoveVoiceLine(index) {
+    this.state.pendingVoiceLines.splice(index, 1);
+    this.render();
+  },
+
+  handleAddMovement(event) {
+    event.preventDefault();
+    const form = event.target;
+    const movement = {
+      type: form.type.value,
+      name: form.name.value
+    };
+    const duration = form.duration.value;
+    if (duration) {
+      movement.duration = parseInt(duration, 10);
+    }
+    this.state.pendingMovements.push(movement);
+    this.render();
+  },
+
+  handleRemoveMovement(index) {
+    this.state.pendingMovements.splice(index, 1);
+    this.render();
+  },
+
+  async handlePushUpdate() {
+    const botId = this.state.selectedBotId;
+    if (!botId) return;
+
+    this.state.pushing = true;
+    this.render();
+
+    const result = await pushBotUpdate(
+      botId,
+      this.state.pendingVoiceLines,
+      this.state.pendingMovements
+    );
+
+    this.state.pushing = false;
+
+    if (result.error) {
+      this.state.pushError = result.error;
+      this.render();
+      setTimeout(() => {
+        this.state.pushError = null;
+        this.render();
+      }, 4000);
+      return;
+    }
+
+    const bot = this.state.bots.find(b => b.id === botId);
+    if (bot) {
+      bot.configVersion = result.newVersion;
+      bot.voiceLines = [...(bot.voiceLines || []), ...this.state.pendingVoiceLines];
+      bot.movements = [...(bot.movements || []), ...this.state.pendingMovements];
+    }
+
+    this.state.pendingVoiceLines = [];
+    this.state.pendingMovements = [];
+    this.state.pushSuccess = true;
+    this.render();
+
+    setTimeout(() => {
+      this.state.pushSuccess = false;
+      this.render();
+    }, 3000);
   },
 
   getFilteredBots() {
@@ -156,6 +248,9 @@ const App = {
       case 'fleetList':
         viewContent = this.renderFleetList();
         break;
+      case 'botDetail':
+        viewContent = this.renderBotDetail();
+        break;
       case 'botForm':
         viewContent = this.renderBotForm();
         break;
@@ -191,6 +286,24 @@ const App = {
       return `<p style="color: red;">Error loading bots: ${this.state.botsError}</p><button onclick="App.loadBots()">Retry</button>`;
     }
     return FleetList.render(this.getFilteredBots(), this.state.searchQuery, this.state.statusFilter);
+  },
+
+  renderBotDetail() {
+    const bot = this.state.bots.find(b => b.id === this.state.selectedBotId);
+    let html = BotDetail.render(
+      bot,
+      this.state.activeDetailTab,
+      this.state.pendingVoiceLines,
+      this.state.pendingMovements,
+      this.state.pushing,
+      this.state.pushError
+    );
+
+    if (this.state.pushSuccess) {
+      html += `<div class="push-toast">Update pushed successfully! Config version bumped.</div>`;
+    }
+
+    return html;
   },
 
   renderBotForm() {

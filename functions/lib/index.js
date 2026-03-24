@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.robotConfig = exports.startSetup = exports.validateCode = void 0;
 const https_1 = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
+const firestore_1 = require("firebase-admin/firestore");
 admin.initializeApp();
 const db = admin.firestore();
 const corsHeaders = {
@@ -83,8 +84,8 @@ exports.startSetup = (0, https_1.onRequest)({ invoker: "public" }, async (req, r
         await botDoc.ref.update({
             kidName: trimmedName,
             status: 'claimed',
-            claimedAt: admin.firestore.FieldValue.serverTimestamp(),
-            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+            claimedAt: firestore_1.FieldValue.serverTimestamp(),
+            updatedAt: firestore_1.FieldValue.serverTimestamp(),
             configVersion: currentVersion + 1
         });
         console.log(`Saved setup for ${normalizedCode}: kidName = ${trimmedName}`);
@@ -122,13 +123,14 @@ exports.robotConfig = (0, https_1.onRequest)({ invoker: "public" }, async (req, 
         const botDoc = querySnapshot.docs[0];
         const botData = botDoc.data();
         await botDoc.ref.update({
-            lastSeenAt: admin.firestore.FieldValue.serverTimestamp()
+            lastSeenAt: firestore_1.FieldValue.serverTimestamp()
         });
         const config = {
-            kidName: botData.kidName || null,
-            greetingMode: botData.greetingMode || "default",
             configVersion: botData.configVersion || 0,
-            updatedAt: botData.updatedAt ? botData.updatedAt.toDate().toISOString() : null
+            updatedAt: botData.updatedAt ? botData.updatedAt.toDate().toISOString() : null,
+            kidName: botData.kidName || null,
+            voiceLines: Array.isArray(botData.voiceLines) ? botData.voiceLines : [],
+            movements: Array.isArray(botData.movements) ? botData.movements : []
         };
         res.status(200).json({ ok: true, config });
     }
