@@ -19,6 +19,7 @@ export const FleetList = {
           <td class="actions-cell">
             <button class="manage-btn" onclick="App.navigate('botDetail', { botId: '${bot.id}' })">Manage</button>
             <button class="edit-btn-small" onclick="App.navigate('botForm', { botId: '${bot.id}' })">Edit</button>
+            <button class="delete-btn-small" onclick="App.handleDeleteBot('${bot.id}', '${(bot.kidName || bot.macAddress || '').replace(/'/g, "\\'")}')">Delete</button>
           </td>
         </tr>
       `;

@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, deleteDoc, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { getApp } from './auth.js';
 
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -78,6 +78,18 @@ export const updateBot = async (botId, botData) => {
     return { error: null };
   } catch (error) {
     console.error("Error updating bot:", error);
+    return { error: error.message };
+  }
+};
+
+export const deleteBot = async (botId) => {
+  try {
+    const db = await getDb();
+    const botRef = doc(db, 'bots', botId);
+    await deleteDoc(botRef);
+    return { error: null };
+  } catch (error) {
+    console.error("Error deleting bot:", error);
     return { error: error.message };
   }
 };

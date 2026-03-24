@@ -3,7 +3,7 @@ import { FleetList } from './components/FleetList.js';
 import { BotForm } from './components/BotForm.js';
 import { BotDetail } from './components/BotDetail.js';
 import { login, logout, subscribeToAuthChanges } from './auth.js';
-import { getBots, createBot, updateBot, pushBotUpdate } from './api.js';
+import { getBots, createBot, updateBot, deleteBot, pushBotUpdate } from './api.js';
 
 // Main entry point for the internal ops panel
 
@@ -96,6 +96,19 @@ const App = {
 
   handleFilter(event) {
     this.state.statusFilter = event.target.value;
+    this.render();
+  },
+
+  async handleDeleteBot(botId, botName) {
+    if (!confirm(`Delete bot "${botName || botId}"? This cannot be undone.`)) return;
+
+    const result = await deleteBot(botId);
+    if (result.error) {
+      alert('Failed to delete bot: ' + result.error);
+      return;
+    }
+
+    this.state.bots = this.state.bots.filter(b => b.id !== botId);
     this.render();
   },
 
