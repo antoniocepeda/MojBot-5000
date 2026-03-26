@@ -7,7 +7,7 @@ const db = admin.firestore();
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Device-Id',
 };
 
 export const validateCode = onRequest({ invoker: "public" }, async (req, res) => {
@@ -132,10 +132,10 @@ export const robotConfig = onRequest({ invoker: "public" }, async (req, res) => 
     return;
   }
 
-  const mac = req.query.mac as string;
+  const mac = (req.query.mac as string) || req.get('Device-Id');
 
   if (!mac) {
-    res.status(400).json({ ok: false, error: "missing_mac" });
+    res.status(400).json({ ok: false, error: "missing_mac", hint: "Pass ?mac= or set Device-Id header" });
     return;
   }
 
